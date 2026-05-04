@@ -1,12 +1,15 @@
 {
   "id": "slack-thinking-steps",
   "name": "Slack Thinking Steps",
-  "description": "Exposes Slack's native Thinking Steps API as agent tools: slack_stream_start, slack_stream_task, slack_stream_stop. The model publishes a plan, updates steps with reasoning as it works, then writes its final answer normally.",
+  "description": "Exposes Slack's native Thinking Steps API as agent tools: slack_stream_start, slack_stream_task, slack_stream_stop. The model publishes a plan, updates steps with reasoning as it works, then writes its final answer normally. Reads the Slack bot token from channels.slack.botToken in openclaw.json or the SLACK_BOT_TOKEN environment variable.",
   "contracts": {
     "tools": ["slack_stream_start", "slack_stream_task", "slack_stream_stop"]
   },
   "activation": {
     "onStartup": true
+  },
+  "providerAuthEnvVars": {
+    "SLACK_BOT_TOKEN": "Slack bot token (xoxb-...). Optional if channels.slack.botToken is configured."
   },
   "configSchema": {
     "type": "object",
