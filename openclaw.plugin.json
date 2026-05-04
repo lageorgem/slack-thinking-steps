@@ -1,42 +1,16 @@
 {
-  "id": "slack-reasoning-collapse",
-  "name": "Slack Reasoning Collapse",
-  "description": "Collapses AI thinking/reasoning blocks in Slack messages into hidden or summarized sections instead of streaming them inline.",
-  "contracts": {},
+  "id": "slack-thinking-steps",
+  "name": "Slack Thinking Steps",
+  "description": "Exposes Slack's native Thinking Steps API as agent tools: slack_stream_start, slack_stream_task, slack_stream_stop. The model publishes a plan, updates steps with reasoning as it works, then writes its final answer normally.",
+  "contracts": {
+    "tools": ["slack_stream_start", "slack_stream_task", "slack_stream_stop"]
+  },
   "activation": {
     "onStartup": true
   },
   "configSchema": {
     "type": "object",
     "additionalProperties": false,
-    "properties": {
-      "mode": {
-        "type": "string",
-        "enum": ["collapsed", "hidden", "inline"],
-        "default": "collapsed",
-        "description": "How to render reasoning blocks: 'collapsed' shows a brief summary, 'hidden' strips entirely, 'inline' preserves raw output."
-      },
-      "patterns": {
-        "type": "array",
-        "items": { "type": "string" },
-        "default": ["<think>[\\s\\S]*?</think>", "<reasoning>[\\s\\S]*?</reasoning>", "<antThinking>[\\s\\S]*?</antThinking>"],
-        "description": "Regex patterns to detect reasoning/thinking blocks in message content."
-      },
-      "collapsedLabel": {
-        "type": "string",
-        "default": "Thinking",
-        "description": "Label shown in the collapsed reasoning indicator."
-      },
-      "showSummary": {
-        "type": "boolean",
-        "default": true,
-        "description": "When mode is 'collapsed', show a brief summary of the reasoning content."
-      },
-      "summaryMaxLength": {
-        "type": "number",
-        "default": 150,
-        "description": "Max characters for the collapsed reasoning summary."
-      }
-    }
+    "properties": {}
   }
 }

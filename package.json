@@ -1,24 +1,24 @@
 {
-  "name": "@gm/slack-reasoning-collapse",
+  "name": "slack-thinking-steps",
   "version": "0.1.0",
-  "description": "OpenClaw plugin that collapses AI thinking/reasoning blocks in Slack messages",
+  "description": "OpenClaw plugin that exposes Slack's native Thinking Steps API as agent tools for real-time plan-and-execute visibility",
   "type": "module",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
-    "lint": "eslint src/",
     "test": "vitest run",
     "test:watch": "vitest",
+    "prepare": "git config core.hooksPath .githooks",
     "prepublishOnly": "npm run build"
   },
   "keywords": [
     "openclaw",
     "openclaw-plugin",
     "slack",
+    "thinking-steps",
     "reasoning",
-    "thinking",
-    "collapse"
+    "streaming"
   ],
   "license": "MIT",
   "openclaw": {
@@ -41,7 +41,6 @@
     "openclaw": ">=2026.3.24-beta.2"
   },
   "devDependencies": {
-    "@sinclair/typebox": "^0.34.0",
     "typescript": "^5.8.0",
     "vitest": "^3.0.0"
   }

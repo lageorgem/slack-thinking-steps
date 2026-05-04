@@ -1,0 +1,39 @@
+#!/bin/sh
+#
+# Validates commit message follows conventional format:
+#   feat: ...    → minor bump
+#   fix: ...     → patch bump
+#   major: ...   → major bump
+#   breaking: .. → major bump
+#   minor: ...   → minor bump
+#   patch: ...   → patch bump
+#   chore: ...   → patch bump
+#   docs: ...    → patch bump
+#   refactor: .. → patch bump
+#   test: ...    → patch bump
+#
+# Commits not matching any prefix will NOT trigger a ClawHub publish.
+
+MSG=$(head -1 "$1")
+
+# Allow automated commits
+if echo "$MSG" | grep -qE '^\(chore\)|^\[skip ci\]|^Merge'; then
+  exit 0
+fi
+
+if ! echo "$MSG" | grep -qiE '^(feat|fix|major|breaking|minor|patch|chore|docs|refactor|test):'; then
+  echo ""
+  echo "ERROR: Commit message must start with a conventional prefix:"
+  echo ""
+  echo "  feat:      new feature (minor version bump)"
+  echo "  fix:       bug fix (patch version bump)"
+  echo "  major:     breaking change (major version bump)"
+  echo "  chore:     maintenance (patch version bump)"
+  echo "  docs:      documentation (patch version bump)"
+  echo "  refactor:  code restructuring (patch version bump)"
+  echo "  test:      test changes (patch version bump)"
+  echo ""
+  echo "  Your message: $MSG"
+  echo ""
+  exit 1
+fi

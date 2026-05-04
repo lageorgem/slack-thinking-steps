@@ -1,0 +1,57 @@
+name: Publish to ClawHub
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npm test
+
+  publish:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - run: npm ci
+
+      - name: Check if publish needed
+        id: check
+        run: |
+          MSG=$(git log -1 --pretty=%s)
+          if echo "$MSG" | grep -qiE '^(feat|fix|major|breaking|minor|patch|chore|docs|refactor|test):'; then
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build and pack
+        if: steps.check.outputs.publish == 'true'
+        run: |
+          npm run build
+          npm pack
+
+      - name: Publish to ClawHub
+        if: steps.check.outputs.publish == 'true'
+        run: |
+          TARBALL=$(ls slack-thinking-steps-*.tgz)
+          npx clawhub login --token "$CLAWHUB_TOKEN"
+          npx clawhub package publish "$TARBALL" \
+            --family code-plugin \
+            --source-repo lageorgem/slack-thinking-steps \
+            --source-commit "$GITHUB_SHA" \
+            --json
+        env:
+          CLAWHUB_TOKEN: ${{ secrets.CLAWHUB_TOKEN }}
