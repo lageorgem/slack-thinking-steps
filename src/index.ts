@@ -31,7 +31,7 @@ export default definePluginEntry({
   description: "Exposes Slack's native Thinking Steps API as agent tools for plan-and-execute visibility.",
 
   register(api) {
-    if (api.registrationMode !== "full") return;
+    console.log(`[slack-thinking-steps] register() mode=${api.registrationMode}`);
 
     // Resolve Slack bot token from openclaw.json or env at registration time.
     let slackBotToken: string | undefined;
@@ -253,6 +253,8 @@ export default definePluginEntry({
         return ok("Stream finalized. Now write your final answer.");
       },
     });
+
+    console.log("[slack-thinking-steps] Registered 3 tools: slack_stream_start, slack_stream_task, slack_stream_stop");
   },
 });
 
