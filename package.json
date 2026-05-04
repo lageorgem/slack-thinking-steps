@@ -1,0 +1,48 @@
+{
+  "name": "@gm/slack-reasoning-collapse",
+  "version": "0.1.0",
+  "description": "OpenClaw plugin that collapses AI thinking/reasoning blocks in Slack messages",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "lint": "eslint src/",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "openclaw",
+    "openclaw-plugin",
+    "slack",
+    "reasoning",
+    "thinking",
+    "collapse"
+  ],
+  "license": "MIT",
+  "openclaw": {
+    "extensions": [
+      "./src/index.ts"
+    ],
+    "runtimeExtensions": [
+      "./dist/index.js"
+    ],
+    "compat": {
+      "pluginApi": ">=2026.3.24-beta.2",
+      "minGatewayVersion": ">=2026.3.24-beta.2"
+    },
+    "build": {
+      "openclawVersion": "2026.3.24-beta.2",
+      "pluginSdkVersion": "2026.3.24-beta.2"
+    }
+  },
+  "peerDependencies": {
+    "openclaw": ">=2026.3.24-beta.2"
+  },
+  "devDependencies": {
+    "@sinclair/typebox": "^0.34.0",
+    "typescript": "^5.8.0",
+    "vitest": "^3.0.0"
+  }
+}
