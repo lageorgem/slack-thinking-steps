@@ -26,30 +26,13 @@ jobs:
           node-version: 22
 
       - run: npm ci
-
-      - name: Check if publish needed
-        id: check
-        run: |
-          MSG=$(git log -1 --pretty=%s)
-          if echo "$MSG" | grep -qiE '^(feat|fix|major|breaking|minor|patch|chore|docs|refactor|test):'; then
-            echo "publish=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "publish=false" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Build and pack
-        if: steps.check.outputs.publish == 'true'
-        run: |
-          npm run build
-          npm pack
+      - name: Build
+        run: npm run build
 
       - name: Publish to ClawHub
-        if: steps.check.outputs.publish == 'true'
         run: |
-          TARBALL=$(ls slack-thinking-steps-*.tgz)
           npx clawhub login --token "$CLAWHUB_TOKEN"
-          npx clawhub package publish "$TARBALL" \
-            --family code-plugin \
+          npx clawhub package publish . \
             --source-repo lageorgem/slack-thinking-steps \
             --source-commit "$GITHUB_SHA" \
             --json
